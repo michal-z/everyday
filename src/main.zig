@@ -84,7 +84,7 @@ pub fn main() !void {
         if (has_path_rendering == false or has_mesh_shader == false) {
             _ = try w32.user32.messageBoxA(
                 window,
-                "Sorry but this application requires modern NVIDIA GPU to run.",
+                "Sorry but this application requires modern NVIDIA GPU with latest graphics drivers to run.",
                 "Unsupported GPU",
                 w32.user32.MB_OK | w32.user32.MB_ICONSTOP,
             );
@@ -225,7 +225,10 @@ fn initOpenGl(hdc: w32.HDC) w32.HGLRC {
     gl.matrixOrthoEXT = getProcAddress(@TypeOf(gl.matrixOrthoEXT), "glMatrixOrthoEXT").?;
     gl.enable = getProcAddress(@TypeOf(gl.enable), "glEnable").?;
     gl.disable = getProcAddress(@TypeOf(gl.disable), "glDisable").?;
-    gl.textureStorage2DMultisample = getProcAddress(@TypeOf(gl.textureStorage2DMultisample), "glTextureStorage2DMultisample").?;
+    gl.textureStorage2DMultisample = getProcAddress(
+        @TypeOf(gl.textureStorage2DMultisample),
+        "glTextureStorage2DMultisample",
+    ).?;
     gl.textureStorage2D = getProcAddress(@TypeOf(gl.textureStorage2D), "glTextureStorage2D").?;
     gl.createTextures = getProcAddress(@TypeOf(gl.createTextures), "glCreateTextures").?;
     gl.deleteTextures = getProcAddress(@TypeOf(gl.deleteTextures), "glDeleteTextures").?;
