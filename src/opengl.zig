@@ -13,6 +13,8 @@ pub const Ubyte = u8;
 pub const Sizeiptr = isize;
 pub const Intptr = isize;
 
+pub const NUM_EXTENSIONS = 0x821D;
+pub const EXTENSIONS = 0x1F03;
 pub const POINT_SPRITE = 0x8861;
 pub const DONT_CARE = 0x1100;
 pub const FASTEST = 0x1101;
@@ -152,6 +154,7 @@ pub const TEXTURE_RECTANGLE = 0x84F5;
 pub const COMPILE = 0x1300;
 pub const COMPILE_AND_EXECUTE = 0x1301;
 
+pub var getStringi: *const fn (Enum, Uint) callconv(w32.WINAPI) [*:0]const Ubyte = undefined;
 pub var newList: *const fn (Uint, Enum) callconv(w32.WINAPI) void = undefined;
 pub var callList: *const fn (Uint) callconv(w32.WINAPI) void = undefined;
 pub var endList: *const fn () callconv(w32.WINAPI) void = undefined;

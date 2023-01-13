@@ -68,6 +68,30 @@ pub fn main() !void {
         _ = wgl.deleteContext(opengl_context);
     }
 
+    {
+        var has_path_rendering: bool = false;
+        var has_mesh_shader: bool = false;
+
+        var num_extensions: i32 = 0;
+        gl.getIntegerv(gl.NUM_EXTENSIONS, @ptrCast([*]i32, &num_extensions));
+        var i: i32 = 0;
+        while (i < num_extensions) : (i += 1) {
+            const ext = std.mem.sliceTo(gl.getStringi(gl.EXTENSIONS, @intCast(u32, i)), 0);
+            if (std.mem.eql(u8, ext, "GL_NV_path_rendering")) has_path_rendering = true;
+            if (std.mem.eql(u8, ext, "GL_NV_mesh_shader")) has_mesh_shader = true;
+        }
+
+        if (has_path_rendering == false or has_mesh_shader == false) {
+            _ = try w32.user32.messageBoxA(
+                window,
+                "Sorry but this application requires modern NVIDIA GPU to run.",
+                "Unsupported GPU",
+                w32.user32.MB_OK | w32.user32.MB_ICONSTOP,
+            );
+            w32.kernel32.ExitProcess(0);
+        }
+    }
+
     gl.matrixLoadIdentityEXT(gl.PROJECTION);
     gl.matrixOrthoEXT(
         gl.PROJECTION,
@@ -182,6 +206,7 @@ fn initOpenGl(hdc: w32.HDC) w32.HGLRC {
     wgl.swapIntervalEXT = getProcAddress(@TypeOf(wgl.swapIntervalEXT), "wglSwapIntervalEXT").?;
     _ = wgl.swapIntervalEXT(1);
 
+    gl.getStringi = getProcAddress(@TypeOf(gl.getStringi), "glGetStringi").?;
     gl.newList = getProcAddress(@TypeOf(gl.newList), "glNewList").?;
     gl.callList = getProcAddress(@TypeOf(gl.callList), "glCallList").?;
     gl.endList = getProcAddress(@TypeOf(gl.endList), "glEndList").?;
