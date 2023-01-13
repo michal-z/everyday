@@ -6,6 +6,8 @@ const impl = @import("implementation");
 
 pub const gl = @import("opengl.zig");
 
+pub export var NvOptimusEnablement: w32.DWORD = 1;
+
 const num_msaa_samples = 8;
 
 pub fn windowFbo() gl.Uint {

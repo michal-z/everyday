@@ -34,6 +34,7 @@ fn install(
         .source = .{ .path = "src/" ++ name ++ ".zig" },
         .dependencies = &.{ app_pkg, zmath.pkg, znoise.pkg },
     });
+    exe.rdynamic = true;
     znoise.link(exe);
 
     const install_step = b.step(name, "Build '" ++ desc_name[0..desc_size] ++ "' demo");
